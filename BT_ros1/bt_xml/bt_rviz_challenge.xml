@@ -1,0 +1,90 @@
+<root main_tree_to_execute = "MainTree">
+    <BehaviorTree ID="MainTree">
+        <Sequence>
+            <SetBlackboard output_key="Receive_1" value="-42.400;-135.040;0.001;Receive;1"/>
+            <SetBlackboard output_key="Receive_2" value="51.550;-41.340;0.001;Receive;2" />
+            <SetBlackboard output_key="Receive_3" value="65.260;44.090;0.001;Receive;3" />
+            <SetBlackboard output_key="Receive_4" value="-77.690;7.690;0.001;Receive;4" />
+            <SetBlackboard output_key="Receive_5" value="30.660;-41.160;0.001;Receive;5" />
+            <SetBlackboard output_key="Deliver_1" value="393.933;-79.505;0.272;Deliver;1" />
+            <SetBlackboard output_key="Deliver_2" value="263.420;-79.169;0.345;Deliver;2" />
+            <SetBlackboard output_key="Deliver_3" value="229.860;-129.159;0.200;Deliver;3" />
+            <SetBlackboard output_key="Deliver_4" value="334.931;-117.614;0.200;Deliver;4" />
+            <SetBlackboard output_key="Deliver_5" value="372.145;-116.396;0.200;Deliver;5" />
+            <SetBlackboard output_key="MoveOutside" value="3.10;-42.04;0.000;OutdoorMap" />
+            <SetBlackboard output_key="MoveInside" value="430.08;-140.00;0.2;IndoorMap" />
+            <SetBlackboard output_key="Person" value="person" />
+            <SetBlackboard output_key="Box" value="box" />
+            
+            <MyRecoveryNode>
+                <SequenceStar name="R-BIZ_Challenge">
+                    <SequenceStar name="Deliver_1,2">
+                        <SubTree ID="MoveAndReceive" target="Receive_1" />
+                        <SubTree ID="MoveAndReceive" target="Receive_2" />
+                        <SubTree ID="MovePlace" target="MoveOutside" />
+                        <SubTree ID="MoveAndDeliver" target="Deliver_1" />
+                        <SubTree ID="MoveAndDeliver" target="Deliver_2" />
+                        <SubTree ID="MovePlace" target="MoveInside" />
+                    </SequenceStar>
+                    <SequenceStar name="Deliver_3,4">
+                        <SubTree ID="MoveAndReceive" target="Receive_3" />
+                        <SubTree ID="MoveAndReceive" target="Receive_4" />
+                        <SubTree ID="MovePlace" target="MoveOutside" />
+                        <SubTree ID="MoveAndDeliver" target="Deliver_3" />
+                        <SubTree ID="MoveAndDeliver" target="Deliver_4" />
+                        <SubTree ID="MovePlace" target="MoveInside" />
+                    </SequenceStar>
+                    <SequenceStar name="Deliver_5">
+                        <SubTree ID="MoveAndReceive" target="Receive_5" />
+                        <SubTree ID="MovePlace" target="MoveOutside" />
+                        <SubTree ID="MoveAndDeliver" target="Deliver_5" />
+                    </SequenceStar>
+                </SequenceStar>
+                <AlwaysSuccess name=""/>
+            </MyRecoveryNode>
+        </Sequence>
+    </BehaviorTree>        
+
+    <BehaviorTree ID="MoveAndReceive">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck />
+            <Sequence>
+                <MoveBase goal="{target}" />
+                <MyRecoveryNode>
+                    <EventCheck mode="{target}" obj_num ="{target}"/>
+                    <SequenceStar>
+                        <AdjustPose />
+                        <VelTo0 />
+                    </SequenceStar>
+                </MyRecoveryNode>
+            </Sequence>
+        </ReactiveSequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MovePlace">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck />
+            <Sequence>
+                <MoveBase goal="{target}" />
+                <ChangeMap map ="{target}" />
+            </Sequence>
+        </ReactiveSequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MoveAndDeliver">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck />
+            <Sequence>
+                <MoveBase goal="{target}" />
+                <MyRecoveryNode>
+                    <EventCheck mode="{target}" num ="{target}"/>
+                    <SequenceStar>
+                        <VelTo0 />
+                        <AdjustPose />
+                    </SequenceStar>
+                </MyRecoveryNode>
+            </Sequence>
+        </ReactiveSequence>
+    </BehaviorTree>
+</root>
+

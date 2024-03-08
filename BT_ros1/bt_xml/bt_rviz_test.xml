@@ -1,0 +1,316 @@
+<root main_tree_to_execute = "MainTree">
+    <BehaviorTree ID="MainTree">
+        <Sequence>
+            <SetBlackboard output_key="Receive_a" value="5.479;1.712;0.0;1.0;Receive;1;0" />
+            <SetBlackboard output_key="Receive_b" value="5.214;-1.533;0.0;1.0;Receive;2;0" />
+            <SetBlackboard output_key="Receive_c" value="2.048;-3.569;0.0;1.0;0;0;0" />
+            <SetBlackboard output_key="Deliver_a" value="-0.579;-1.341;0.0;1.0;Deliver;1;0" />
+            <SetBlackboard output_key="Deliver_b" value="2.214;-1.533;0.0;1.0;Deliver;2;0" />
+            <SetBlackboard output_key="Deliver_c" value="-1.588;1.253;0.0;1.0;0;0;0" />
+            <SetBlackboard output_key="MoveOutside" value="-1.227;1.235;0.0;1.0;0;0;OutdoorMap" />
+            <SetBlackboard output_key="MoveInside" value="-1.227;1.235;0.0;1.0;0;0;IndoorMap" />
+            <SetBlackboard output_key="OutMap" value="OutdoorMap" />
+            <SetBlackboard output_key="InMap" value="IndoorMap" />
+
+            <MyRecoveryNode>
+                <SequenceStar name="R-BIZ_Challenge">
+                    <SequenceStar name="Deliver_1,2">
+                        <!-- <SubTree ID="MoveAndReceive" target="Receive_a" /> -->
+                        <SubTree ID="MoveAndReceive" target="Receive_b" />
+                        <SubTree ID="MovePlace" target="MoveOutside" />
+                        <!-- <SubTree ID="MoveAndDeliver" target="Deliver_a" /> -->
+                        <SubTree ID="MoveAndDeliver" target="Deliver_b" />
+                        <SubTree ID="MovePlace" target="MoveInside" />
+                    </SequenceStar>
+                    <SequenceStar name="Deliver_3,4">
+                        <!-- <SubTree ID="MoveAndReceive" target="Receive_a" /> -->
+                        <SubTree ID="MoveAndReceive" target="Receive_a" />
+                        <SubTree ID="MovePlace" target="MoveOutside" />
+                        <!-- <SubTree ID="MoveAndDeliver" target="Deliver_a" /> -->
+                        <SubTree ID="MoveAndDeliver" target="Deliver_a" />
+                        <SubTree ID="MovePlace" target="MoveInside" />
+                    </SequenceStar>
+                </SequenceStar>
+                <AlwaysSuccess name=""/>
+            </MyRecoveryNode>
+        </Sequence>
+    </BehaviorTree>        
+
+    <BehaviorTree ID="MoveAndReceive">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck />
+            <Sequence>
+                <MoveBase goal="{target}" />
+                <EventCheck mode="{target}" obj_num ="{target}"/>
+            </Sequence>
+        </ReactiveSequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MovePlace">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck/>
+            <Fallback>
+                <ReactiveSequence name="CheckChangeMap">
+                    <CheckChangeMap />
+                    <Sequence>
+                        <MoveBase goal="{target}" />
+                        <ChangeMap map="{target}" />
+                    </Sequence>
+                </ReactiveSequence>
+                <ChangeMap map="{target}" />
+            </Fallback>
+        </ReactiveSequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MoveAndDeliver">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck />
+            <Sequence>
+                <MoveBase goal="{target}" />
+                <EventCheck mode="{target}" obj_num ="{target}"/>
+            </Sequence>
+        </ReactiveSequence>
+    </BehaviorTree>
+    
+</root>
+
+<!-- <root main_tree_to_execute = "MainTree">
+    <BehaviorTree ID="MainTree">
+        <Sequence>
+            <SetBlackboard output_key="Receive_a" value="5.479;1.712;0.0;1.0;Receive;1;0" />
+            <SetBlackboard output_key="Receive_b" value="5.214;-1.533;0.0;1.0;Receive;2;0" />
+            <SetBlackboard output_key="Receive_c" value="2.048;-3.569;0.0;1.0;0;0;0" />
+            <SetBlackboard output_key="Deliver_a" value="-0.579;-1.341;0.0;1.0;Deliver;1;0" />
+            <SetBlackboard output_key="Deliver_b" value="2.214;-1.533;0.0;1.0;Deliver;2;0" />
+            <SetBlackboard output_key="Deliver_c" value="-1.588;1.253;0.0;1.0;0;0;0" />
+            <SetBlackboard output_key="MoveOutside" value="-1.227;1.235;0.0;1.0;0;0;OutdoorMap" />
+            <SetBlackboard output_key="MoveInside" value="-1.227;1.235;0.0;1.0;0;0;IndoorMap" />
+            <SetBlackboard output_key="OutMap" value="OutdoorMap" />
+            <SetBlackboard output_key="InMap" value="IndoorMap" />
+
+            <MyRecoveryNode>
+                <SequenceStar name="R-BIZ_Challenge">
+                    <SequenceStar name="Deliver_1,2">
+                        <SubTree ID="MoveAndReceive" target="Receive_a" />
+                        <SubTree ID="MoveAndReceive" target="Receive_b" />
+                        <SubTree ID="MovePlace" target="MoveOutside" />
+                        <SubTree ID="MoveAndDeliver" target="Deliver_a" />
+                        <SubTree ID="MoveAndDeliver" target="Deliver_b" />
+                        <SubTree ID="MovePlace" target="MoveInside" />
+                    </SequenceStar>
+                </SequenceStar>
+                <AlwaysSuccess name=""/>
+            </MyRecoveryNode>
+        </Sequence>
+    </BehaviorTree>        
+
+    <BehaviorTree ID="MoveAndReceive">
+        <Sequence>
+            <MoveBase goal="{target}" />
+            <EventCheck mode="{target}" obj_num ="{target}"/>
+        </Sequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MovePlace">
+        <Sequence>
+            <MoveBase goal="{target}" />
+            <ChangeMap map ="{target}" />
+        </Sequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MoveAndDeliver">
+        <Sequence>
+            <MoveBase goal="{target}" />
+            <EventCheck mode="{target}" obj_num ="{target}"/>
+        </Sequence>
+    </BehaviorTree>
+    
+</root> -->
+
+<!-- <root main_tree_to_execute = "MainTree">
+    <BehaviorTree ID="MainTree">
+        <Sequence>
+            <SetBlackboard output_key="Receive_1" value="-36.791;-94.325;0.264;0.964;Receive;1;0"/>
+            <SetBlackboard output_key="Receive_2" value="57;-1.477;0.0;1.0;Receive;2;0" />
+            <SetBlackboard output_key="Receive_3" value="71.109;84.103;0.001;0;Receive;3;0" />
+            <SetBlackboard output_key="Receive_4" value="-71.641;48.027;-0.744;0.677;Receive;4;0" />
+            <SetBlackboard output_key="Receive_5" value="36.179;-0.549;0.209;0.977;Receive;5;0" />
+            <SetBlackboard output_key="Deliver_1" value="-36.068;59.8;1.0;0.0;Deliver;1;0" />
+            <SetBlackboard output_key="Deliver_2" value="-166.412;60.10;1.0;0.0;Deliver;2;0" />
+            <SetBlackboard output_key="Deliver_3" value="-200.233;10.833;0.200;0;Deliver;3;0" />
+            <SetBlackboard output_key="Deliver_4" value="-95.719;23.028;1.0;0.0;Deliver;4;0" />
+            <SetBlackboard output_key="Deliver_5" value="-58.063;24.555;0.875;0.483;Deliver;5;0" />
+            <SetBlackboard output_key="Deliver_6" value="-5.063;24.555;0.875;0.483;Deliver;5;0" />
+            <SetBlackboard output_key="MoveOutside" value="8.619;-2.0;0.0;1.0;0;0;OutdoorMap" />
+            <SetBlackboard output_key="MoveInside" value="0.0;0.0;0.0;1.0;0;0;IndoorMap" />
+            -->
+
+<!-- Deliver -->
+<!-- 1 -->
+    <!-- position: 
+      x: -36.068054199102335
+      y: 59.6876449547708
+      z: 0.0
+    orientation: 
+      x: 0.00010552872117841616
+      y: -2.7815527573693544e-05
+      z: -0.9992260932922363
+      w: 0.03933494910597801 -->
+
+
+
+<!-- 2 -->
+    <!-- position: 
+      x: -166.81228637637105
+      y: 60.103904724586755
+
+      z: 0.0
+    orientation: 
+      x: -0.01007647905498743
+      y: 0.009842943400144577
+      z: -0.7518784999847412
+      w: -0.6591511368751526 -->
+
+
+
+<!-- 4 -->
+    <!-- position: 
+      x: -95.41964721598197
+      y: 23.02878570696339
+      z: 0.0
+    orientation: 
+      x: 3.2604770439093045e-08
+      y: 6.078523995256546e-08
+      z: -0.7448394298553467
+      w: 0.6672437787055969 -->
+
+
+<!-- 5 -->
+    <!-- position: 
+      x: -58.063110351678915
+      y: 24.555625912733376
+      z: 0.0
+    orientation: 
+      x: -1.6939848634933696e-08
+      y: -3.368715439933112e-08
+      z: 0.8752943873405457
+      w: 0.4835904836654663 -->
+
+
+
+<!-- Receive -->
+<!-- 4 -->
+    <!-- position: 
+      x: -71.57994175172644
+      y: 47.841410636901855
+      z: 0.0
+    orientation: 
+      x: -0.010131342336535454
+      y: -0.00037827479536645114
+      z: -0.9994407296180725
+      w: 0.03186635300517082 -->
+
+
+<!-- 5 -->
+    <!-- position: 
+      x: 36.17929935269058
+      y: -0.5492477440275252
+      z: 0.0
+    orientation: 
+      x: 2.140958059726472e-07
+      y: -2.0000584299850743e-08
+      z: 0.20933260023593903
+      w: 0.9778444766998291 -->
+<!-- 1 -->
+    <!-- position: 
+      x: -36.791420936759096
+      y: -94.3257179283537
+      z: 0.0
+    orientation: 
+      x: 6.932818052973744e-08
+      y: -6.46126849801476e-08
+      z: 0.264614999294281
+      w: 0.9643541574478149 -->
+
+
+            <!-- <MyRecoveryNode>
+                <SequenceStar name="R-BIZ_Challenge">
+                    <SequenceStar name="Deliver_1,2">
+                        <SubTree ID="MoveAndReceive" target="Receive_1" /> -->
+                        <!-- <SubTree ID="MoveAndReceive" target="Receive_2" /> -->
+                        <!-- <SubTree ID="MoveOutside" target="MoveOutside" /> -->
+                        <!-- <SubTree ID="MoveAndDeliver" target="Deliver_1" /> -->
+                        <!-- <SubTree ID="MoveAndDeliver" target="Deliver_2" />
+                        <SubTree ID="MovePlace" target="MoveInside" />
+                    </SequenceStar>
+                    <SequenceStar name="Deliver_4,5"> -->
+                        <!-- <SubTree ID="MoveAndReceive" target="Receive_2" /> -->
+                        <!-- <SubTree ID="MoveAndReceive" target="Receive_4" /> -->
+                        <!-- <SubTree ID="MoveOutside" target="MoveOutside" /> -->
+                        <!-- <SubTree ID="MoveAndDeliver" target="Deliver_2" />  -->
+                        <!-- <SubTree ID="MoveAndDeliver" target="Deliver_4" /> -->
+                        <!-- <SubTree ID="MovePlace" target="MoveInside" />
+                    </SequenceStar>
+                </SequenceStar>
+                <AlwaysSuccess name=""/>
+            </MyRecoveryNode>
+        </Sequence>
+    </BehaviorTree>        
+
+    <BehaviorTree ID="MoveAndReceive">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck />
+            <Sequence>
+                <MoveBase goal="{target}" />
+                <EventCheck mode="{target}" obj_num ="{target}"/>
+            </Sequence>
+        </ReactiveSequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MovePlace">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck/>
+            <Fallback>
+                <ReactiveSequence name="CheckChangeMap">
+                    <CheckChangeMap2 />
+                    <MoveBase goal="{target}" />
+                </ReactiveSequence>
+                <ChangeMap map="{target}" />
+            </Fallback>
+        </ReactiveSequence>
+    </BehaviorTree>
+
+    <BehaviorTree ID="MoveOutside">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck/>
+            <Fallback>
+                <ReactiveSequence name="CheckChangeMap">
+                    <CheckChangeMap />
+                    <MoveBase goal="{target}" />
+                </ReactiveSequence>
+                <ChangeMap map="{target}" />
+            </Fallback>
+        </ReactiveSequence>
+    </BehaviorTree>
+
+
+    <BehaviorTree ID="MoveAndDeliver">
+        <ReactiveSequence name="CollisionCheck">
+            <CollisionCheck />
+            <Sequence>
+                <MoveBase goal="{target}" />
+                <EventCheck mode="{target}" obj_num ="{target}"/>
+            </Sequence>
+        </ReactiveSequence>
+    </BehaviorTree> -->
+
+
+    <!-- <BehaviorTree ID="MoveAndDeliver">
+        <ReactiveSequence name="CollisionCheck">
+            <Sequence>
+                <MoveBase goal="{target}" />
+            </Sequence>
+        </ReactiveSequence>
+    </BehaviorTree> -->
+    
+<!-- </root> -->

@@ -1,0 +1,66 @@
+<!-- <root main_tree_to_execute = "MainTree">
+
+    <BehaviorTree ID="MainTree">
+        <Sequence>
+            <SetBlackboard output_key="Goal_a" value="0.543;0.089;0.000;1.0" />
+            <SetBlackboard output_key="Goal_b" value="-0.898;-1.182;0.0;1.0" />
+            <MoveBase goal="{Goal_a}" />
+            <ReactiveSequence>
+                <MyRecoveryNode>
+                    <DetectPerson/>
+                    <Wait wait_duration="2"/>
+                </MyRecoveryNode>
+                <MoveBase goal="{Goal_b}" />
+            </ReactiveSequence>
+        </Sequence>
+    </BehaviorTree>
+    
+</root> -->
+
+<!-- <root main_tree_to_execute = "MainTree">
+
+    <BehaviorTree ID="MainTree">
+        <MyRecoveryNode>
+            <SequenceStar>
+                <SetBlackboard output_key="Goal_a" value="0.543;0.089;0.000;1.0" />
+                <SetBlackboard output_key="Goal_b" value="-0.898;-1.182;0.0;1.0" />
+                <MoveBase goal="{Goal_a}" />
+                <ReactiveSequence>
+                    <MyRecoveryNode>
+                        <DetectPerson/>
+                        <Wait wait_duration="2"/>
+                    </MyRecoveryNode>
+                    <MoveBase goal="{Goal_b}" />
+                </ReactiveSequence>
+            </SequenceStar>
+            <AlwaysSuccess/>
+        </MyRecoveryNode>
+    </BehaviorTree>
+    
+</root> -->
+
+<!-- 모든 move base 경로에서 사람이 detect 되면 go and stop -->
+
+<root main_tree_to_execute = "MainTree">
+
+    <BehaviorTree ID="MainTree">
+        <MyRecoveryNode>
+            <Sequence>
+                <SetBlackboard output_key="Goal_a" value="0.543;0.089;0.000;1.0" />
+                <SetBlackboard output_key="Goal_b" value="-0.898;-1.182;0.0;1.0" />
+                <ReactiveSequence>
+                    <MyRecoveryNode>
+                        <DetectPerson/>
+                        <Wait wait_duration="2"/>
+                    </MyRecoveryNode>
+                    <SequenceStar>
+                        <MoveBase goal="{Goal_a}" />
+                        <MoveBase goal="{Goal_b}" />
+                    </SequenceStar>
+                </ReactiveSequence>
+            </Sequence>
+            <AlwaysSuccess/>
+        </MyRecoveryNode>
+    </BehaviorTree>
+    
+</root>

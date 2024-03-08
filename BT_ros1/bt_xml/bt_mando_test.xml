@@ -1,0 +1,14 @@
+<root main_tree_to_execute="MainTree">
+    <BehaviorTree ID="MainTree">
+        <ReactiveSequence>
+            <Sequence name="">
+                <MyRecoveryNode>
+                    <DetectPerson/>
+                    <Wait wait_duration="2"/>
+                </MyRecoveryNode>
+                <AlwaysSuccess name=""/>
+            </Sequence>
+            <AlwaysRunning/>
+        </ReactiveSequence>
+    </BehaviorTree>
+</root>
