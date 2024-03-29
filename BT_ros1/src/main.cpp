@@ -15,6 +15,7 @@
 #include "check_change_map.h"
 #include "detect_person_condition.hpp"
 #include "wait_action.h"
+#include "interrupt_event2.h"
 
 #include <behaviortree_cpp_v3/bt_factory.h>
 #include <behaviortree_cpp_v3/loggers/bt_cout_logger.h>
@@ -44,6 +45,7 @@ int main(int argc, char **argv) {
   factory.registerSimpleCondition("CheckBattery", CheckBattery, {BT::InputPort<int>("wait_tick")});
   factory.registerNodeType<AlwaysRunning>("AlwaysRunning");
   factory.registerNodeType<InterruptEvent>("InterruptEvent");
+  factory.registerNodeType<InterruptEvent2>("InterruptEvent2");
   factory.registerNodeType<MyRecoveryNode>("MyRecoveryNode");
   factory.registerNodeType<ChangeMap>("ChangeMap");
   factory.registerNodeType<EventCheck>("EventCheck");

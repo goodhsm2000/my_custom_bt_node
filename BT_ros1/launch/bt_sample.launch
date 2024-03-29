@@ -2,7 +2,7 @@
 <launch>
 
     <node pkg="bt_sample" type="node" name="bt_sample" output="screen">
-        <param name="file" value="$(find bt_sample)/bt_xml/bt_immersion.xml"/>
+        <param name="file" value="$(find bt_sample)/bt_xml/bt_immersion_gui.xml"/>
     </node>
 
 </launch>

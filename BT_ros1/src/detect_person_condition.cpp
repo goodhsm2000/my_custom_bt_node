@@ -8,7 +8,7 @@ DetectPersonCondition::DetectPersonCondition(
   const BT::NodeConfiguration & conf)
 : BT::ConditionNode(condition_name, conf)
 {
-  sub_ = node_.subscribe("yolov8/BoundingBoxes", 1000, &DetectPersonCondition::detectionCallback, this);
+  sub_ = node_.subscribe("yolov8/detect_with_dis", 1000, &DetectPersonCondition::detectionCallback, this);
 }
 
 BT::NodeStatus DetectPersonCondition::tick()
@@ -38,7 +38,7 @@ void DetectPersonCondition::detectionCallback(const yolov8_ros_msgs::BoundingBox
     person_detected_ = false;
     ROS_INFO("Nothing was detected");
   for (const auto& detection : msg->bounding_boxes) { // 아무런 객체도 검출되지 않으면 이 코드조차 실행이 안됨
-    if (detection.Class == "person") 
+    if (detection.Class == "person" && detection.distance > 0 && detection.distance < 0.8) 
       person_detected_ = true;
   }
 

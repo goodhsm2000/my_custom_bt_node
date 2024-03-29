@@ -50,9 +50,9 @@
     <Action ID="AlwaysRunning" />
     
     <!-- using at ROS1 -->
-    <Action ID="InterruptEvent">
+    <Condition ID="InterruptEvent">
       <input_port name="event">Event</input_port>
-    </Action>
+    </Condition>
     
     <Action ID="MoveBase">
       <input_port name="goal">Goal</input_port>
@@ -67,6 +67,10 @@
     <Action ID="AdjustPose" />
     
     <!-- ############################### CONDITION NODES ############################## -->
+    <Action ID="InterruptEvent2">
+      <input_port name="event">Event</input_port>
+    </Action>
+
     <Condition ID="GoalReached">
         <input_port name="goal">Destination</input_port>
     </Condition>

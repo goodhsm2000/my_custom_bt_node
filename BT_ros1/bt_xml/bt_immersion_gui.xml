@@ -1,0 +1,37 @@
+<root main_tree_to_execute = "MainTree">
+    <BehaviorTree ID="MainTree">
+        <MyRecoveryNode>
+            <Sequence>
+                <SetBlackboard output_key="Goal_a" value="0.543;0.089;0.000;1.0" />
+                <SetBlackboard output_key="Goal_b" value="-0.898;-1.182;0.0;1.0" />
+                <Fallback>
+                    <ReactiveSequence>
+                        <InterruptEvent event="manual"/>
+                        <Repeat num_cycles="10">
+                            <SequenceStar>
+                                <MoveBase goal="{Goal_a}" />
+                                <MoveBase goal="{Goal_b}" />
+                            </SequenceStar>
+                        </Repeat>
+                    </ReactiveSequence>
+                    <Fallback>
+                        <ReactiveSequence>
+                            <InterruptEvent2 event="Goal_A"/>
+                            <MoveBase goal="{Goal_a}" />
+                        </ReactiveSequence>
+                        <ReactiveSequence>
+                            <InterruptEvent2 event="Goal_B"/>
+                            <MoveBase goal="{Goal_b}" />
+                        </ReactiveSequence>
+                        <ReactiveSequence>
+                            <InterruptEvent2 event="stop"/>
+                            <Wait wait_duration="2"/>
+                        </ReactiveSequence>                       
+                    </Fallback>
+                </Fallback>
+                <AlwaysFailure/>
+            </Sequence>
+            <AlwaysSuccess/>
+        </MyRecoveryNode>
+    </BehaviorTree>
+</root>

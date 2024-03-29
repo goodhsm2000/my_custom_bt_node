@@ -4,3 +4,4 @@ int64 ymin
 int64 xmax
 int64 ymax
 string Class
+float64 distance

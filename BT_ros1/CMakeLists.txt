@@ -75,6 +75,8 @@ add_executable(${PROJECT_NAME}_node
    src/detect_person_condition.cpp
    src/always_running.h
    src/wait_action.cpp
+   src/interrupt_event.h
+   src/interrupt_event2.h
    )
 
 ## Rename C++ executable without prefix
